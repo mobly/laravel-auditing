@@ -295,7 +295,7 @@ trait Auditable
             'event'              => $this->auditEvent,
             'auditable_id'       => $this->getKey(),
             'auditable_type'     => $this->getMorphClass(),
-            $morphPrefix.'_id'   => $user ? $user->getAuthIdentifier() : null,
+            $morphPrefix.'_id'   => $user ? $user->getAuthIdentifier() : $this->mobly_getAuthenticatedUser(),
             $morphPrefix.'_type' => $user ? $user->getMorphClass() : null,
             'url'                => $this->resolveUrl(),
             'ip_address'         => $this->resolveIpAddress(),
@@ -618,5 +618,13 @@ trait Auditable
         }
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    private function mobly_getAuthenticatedUser()
+    {
+        return empty($_COOKIE['email']) ? null : $_COOKIE['email'];
     }
 }
